@@ -2,10 +2,9 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include<fstream>
+#include <fstream>
 using namespace std;
 #include <locale.h>
-//setlocale(LC_ALL, "Russian");
 
 
 string clear_and_write_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin);
@@ -159,6 +158,8 @@ string write_act_and_next(string bufer, char input_symble, ofstream& fout, ifstr
 
 int main()
 {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "RUSSIAN");
     ifstream keyword_table("keywords.txt");
     
