@@ -2,11 +2,11 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include <fstream>
-using namespace std;
+#include<fstream>
 #include <locale.h>
+using namespace std;
 
-
+//обьявление функций
 string clear_and_write_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin);
 string add_in_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin);
 string ungetch(string bufer, char input_symble, ofstream& fout, ifstream& fin);
@@ -20,7 +20,7 @@ string skip(string bufer, char input_symble, ofstream& fout, ifstream& fin);
 //создаем таблицу ключевых слов
 std::map<std::string, std::string> key_words{};
 std::map<std::string, int> personality_table{}, act_scene_table{};
-//уууу глобальные переменные
+
 
 
 
@@ -30,19 +30,20 @@ string skip(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 }
 
 
+//добавляет введенный символ в буфер
 string add(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
-    //bufer.append(&input_symble);
     bufer += input_symble;
     //fout << "Added_in_bufer. bufer:" << bufer << endl;
     return bufer;
 }
 
 
+//обработка лексемы типа имя
 string write_name(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     //fout << "Writing name:" << bufer << endl;
-    if (personality_table.count(bufer) != 0)
+    if (personality_table.count(bufer) != 0)  //проверка, что имя не является ключевым словом или названием акта\сцены
     {
         cout << "Error. name " << bufer << " already exists." << endl;
         return "";
@@ -55,10 +56,13 @@ string write_name(string bufer, char input_symble, ofstream& fout, ifstream& fin
         cout << "Error. name " << bufer << " already exists." << endl;
         return "";
     }
+    //имена переменных начинаются с единицы, соответствие - имя <-> символ хранится в personality_table
     int num = personality_table.size() + 1;
     personality_table[bufer] = num;
     return "";
 }
+
+//обработка лексемы типа акт/сцена
 string write_act(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     //fout << "Writing act:" << bufer << endl;
@@ -77,6 +81,7 @@ string write_act(string bufer, char input_symble, ofstream& fout, ifstream& fin)
         //fout << " " << act_scene_table[bufer] << " ";
         return "";
     }
+    //имена актов\сцен - отрицательные числа. нумерация начинается с минус единицы, соответствие - имя <-> символ хранится в act_scene_table
     int num = -1 - act_scene_table.size();
     act_scene_table[bufer] = num;
     fout << "\"" << act_scene_table[bufer] << "\", ";
@@ -85,7 +90,7 @@ string write_act(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 }
 
 
-
+/*
 string write_scene(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     //fout << "Writing scene:" << bufer << endl;
@@ -111,9 +116,12 @@ string write_scene(string bufer, char input_symble, ofstream& fout, ifstream& fi
     return "";
 
 }
+*/
+
+//обрабатывает лексему типа слово, выводит в файл вывода
 string write_word(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
-    //fout << "Writing word:" << bufer << endl;
+    //Каждому слову сопоставляется лексема или из таблицы ключевых слов, или из таблицы имен, или из таблицы имен актов/сцен
     
     if (bufer == "@" or bufer == "$")
     {
@@ -137,6 +145,8 @@ string write_word(string bufer, char input_symble, ofstream& fout, ifstream& fin
     }
     return "";
 }
+
+//Обрабатывает две лексемы, лексему типа слово из bufer и лексему типа слово из input_symble
 string write_word_and_next(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     string next = "";
@@ -147,6 +157,7 @@ string write_word_and_next(string bufer, char input_symble, ofstream& fout, ifst
     return "";
 }
 
+//Обрабатывает две лексемы, лексему типа имя акта/сцены из bufer и лексему типа слово из input_symble
 string write_act_and_next(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     write_act(bufer, input_symble, fout, fin);
@@ -158,18 +169,12 @@ string write_act_and_next(string bufer, char input_symble, ofstream& fout, ifstr
 
 int main()
 {
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
     setlocale(LC_ALL, "RUSSIAN");
     ifstream keyword_table("keywords.txt");
     
     
-    //ifstream fin("input.txt");
-    //ofstream fout("output.txt");
-
     
-    
- 
+    //заполнение таблицы ключевых слов
     //первая строка - input; вторая строка - output
     while (!keyword_table.eof())
     {
@@ -200,15 +205,16 @@ int main()
 
     */
 
-
+    //В input.txt хратится исходный код обрабатываемой программы
     ifstream fin_pre("input.txt");
+    //В output_pre.txt хратится вывод препроцессора
     ofstream fout_pre("output_pre.txt");
-    //Пытаюсь сделать конечный автомат для препроцессора
     std::map<std::pair<char, int>, std::pair<string(*)(string bufer, char input_symble, ofstream& fout, ifstream& fin), int>> preprocess_rules{};
     //Для пары тек состояния int и символа ввода char ставим в соответствие пару следующего состояния и функцию, что будет что-то делать
 
-      //правила конечного автомата для препроцессора:
-
+    //правила конечного автомата для препроцессора:
+    //Препроцессор переводит все символы в нижний регистр и заменяет ключевые слова "Акт" и "Сцена" на символы @ и $
+    //Это нужно для упрощения процедуры лексического анализа и удобного вывода результатов
     preprocess_rules[make_pair('А', 1)] = make_pair(&add_in_bufer, 2);
     preprocess_rules[make_pair('к', 2)] = make_pair(&add_in_bufer, 3);
     preprocess_rules[make_pair('т', 3)] = make_pair(&add_in_bufer, 4);
@@ -251,21 +257,20 @@ int main()
         auto action = (it->second).first;
         int next_state = (it->second).second;
 
-        //cout << "Что-то делаем do-do " << current_state << "\tбуфер:" << bufer << "\tТекущий символ:" << static_cast<int> (input_symbol) << endl;
-
+        
         bufer = (*action)(bufer, input_symbol, fout_pre, fin_pre);
         current_state = next_state;
     }
-    //дописать ввод символ #
+ 
 
 
     fin_pre.close();
     fout_pre.close();
 
-
+    //Правила конечного автомата для лексического анализа
     std::map<std::pair<char, int>, std::pair<string(*)(string bufer, char   input_symble, ofstream& fout, ifstream& fin), int>> lex_anal_rules{};
-    //надо заполнить
 
+    //Разбиение символов из алфавита на группы
     char letters[] = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮйцукенгшщзхъфывапролджэячсмитьбюivxlcdm";
     char non_roman_letters[] = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮйцукенгшщзхъфывапролджэячсмитьбю";
     char spaces[] = "\n\t ";
@@ -359,9 +364,7 @@ int main()
 
     cout << "Starting lex analysis" << endl;
 
-    //string bufer =""; 
-    //char input_symbol;
-    //int current_state = 0;
+
     bufer = "";
     current_state = 0;
     while (fin_lex.get(input_symbol))
@@ -383,7 +386,7 @@ int main()
         bufer = (*action)(bufer, input_symbol, fout_lex, fin_lex);
         current_state = next_state;
     }
-    //дописать #
+
     fin_lex.close();
     fout_lex.close();
 
@@ -413,6 +416,8 @@ string clear_and_write_bufer(string bufer, char input_symble, ofstream& fout, if
     fout << bufer;
     return "";
 }
+
+//добавляет input_symble в bufer
 string add_in_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     char c = tolower(input_symble);
@@ -421,13 +426,16 @@ string add_in_bufer(string bufer, char input_symble, ofstream& fout, ifstream& f
 }
 
 //пока не нужно, но пусть будет
+/*
 string ungetch(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     int cur_pos = fin.tellg();
     fin.seekg(cur_pos - 1); //или +1 ?
     return bufer;
-}
+}*/
 
+//Препроцессор  заменяет ключевые слова "Акт" и "Сцена" на символы @ и $
+//Это нужно для упрощения процедуры лексического анализа и удобного вывода результатов
 string write_act_pre(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     cout << "writing act\n";
@@ -437,6 +445,9 @@ string write_act_pre(string bufer, char input_symble, ofstream& fout, ifstream& 
     return "";
 }
 
+
+//Препроцессор  заменяет ключевые слова "Акт" и "Сцена" на символы @ и $
+//Это нужно для упрощения процедуры лексического анализа и удобного вывода результатов
 string write_scene_pre(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     cout << "writing scene";
@@ -449,7 +460,7 @@ string write_scene_pre(string bufer, char input_symble, ofstream& fout, ifstream
 
 
 
-//пипец у меня код страшный конечно
+//Добавление однотипных правил перехода для каждого символа из строки
 void add_list_to_rules(char* symbols, std::map<std::pair<char, int>, std::pair<string(*)(string bufer, char   input_symble, ofstream& fout, ifstream& fin), int>> &rules, int start, int end, string(*func)(string bufer, char   input_symble, ofstream& fout, ifstream& fin)) {
 
     char* ptr = symbols;
