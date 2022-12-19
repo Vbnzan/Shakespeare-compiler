@@ -1,0 +1,97 @@
+<PROG>        --> <DESCR> . <CHARS> <ACTS>
+
+<CHARS>       --> <CHARS> <CHAR>
+<CHARS>       --> <CHAR>
+
+<CHAR>        --> a : <DESCR> .
+
+<ACTS>        --> <ACTS> <ACT>
+<ACTS>        --> <ACT>
+
+<ACT>         --> <TITLEACT> <SCENES>
+
+<TITLEACT>    --> act a : <DESCR> .
+
+<SCENES>      --> <SCENES> <SCENE>
+<SCENES>      --> <SCENE>
+
+<SCENE>       --> <TITLESCENE> <MOP>
+
+<TITLESCENE>  --> scene a : <DESCR> .
+
+<MOP>         --> <MOP> <OP>
+<MOP>         --> <OP>
+
+<OP>          --> <SPEECH>
+<OP>          --> [ exeunt a and a ]
+<OP>          --> [ exeunt ]
+<OP>          --> [ exit a ]
+<OP>          --> [ enter a ]
+<OP>          --> [ enter a and a ]
+
+<SPEECH>      --> a : <LINES>
+
+<LINES>       --> <LINES> <LINE>
+<LINES>       --> <LINE>
+
+<LINE>        --> <QUEST>
+<LINE>        --> <STATM>
+<LINE>        --> <COND>
+<LINE>        --> <JUMP>
+<LINE>        --> <REC>
+<LINE>        --> <REM>
+
+<LINE>        --> <GETN>
+<LINE>        --> <PUTN>
+<LINE>        --> <GETC>
+<LINE>        --> <PUTC>
+
+<GETN>        --> listen to your heart .
+<PUTN>        --> open your heart .
+<GETC>        --> open your mind .
+<PUTC>        --> speak your mind .
+
+<REC>         --> recall <DESCR> .
+<REM>         --> remember me .
+<REM>         --> remember yourself .
+
+<COND>        --> if so , <LETS> <GOTO> scene a .
+<COND>        --> if so , <LETS> <GOTO> act a .
+<COND>        --> if not , <LETS> <GOTO> scene a .
+<COND>        --> if not , <LETS> <GOTO> act a .
+
+<JUMP>        --> <LETS> <GOTO> scene a .
+<JUMP>        --> <LETS> <GOTO> act a .
+
+<LETS>        --> let us
+<LETS>        --> we shall
+<LETS>        --> we must
+
+<GOTO>        --> return to
+<GOTO>        --> proceed to
+
+<QUEST>       --> am i <COMP> ?
+<QUEST>       --> are you <COMP> ?
+<QUEST>       --> is <E> <COMP> ?
+
+<STATM>       --> you are as adj as <E> .
+<STATM>       --> you <E> .
+
+<COMP>        --> as adj as <E>
+<COMP>        --> better than <E>
+<COMP>        --> worse than <E>
+<COMP>        --> not as adj as <E>
+<COMP>        --> not better than <E>
+<COMP>        --> not worse than <E>
+
+<E>           --> square of <E>
+<E>           --> cube of <E>
+<E>           --> square root of <E>
+<E>           --> sum of <E> and <E>
+<E>           --> product of <E> and <E>
+<E>           --> a
+<E>           --> nothing           ----- that's a word, not literally nothing
+<E>           --> <T>
+
+<T>           --> adj <T>
+<T>           --> noun

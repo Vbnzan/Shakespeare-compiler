@@ -1,4 +1,0 @@
-
-"act", "-1", ":", ".", 
-"scene", "-2", ":", ".", "[", "enter", "2", ",", "1", "]", "2", ":", "you", "adj", "=noun", ".", "you", "as", "adj", "as", "difference", "you", "and", "adj", "adj", "-noun", ".", "1", ":", "you", "+noun", ".", "you", "better", "than", "+noun", "?", 
-"scene", "-3", ":", ".", "[", "exit", "1", "]", "2", ":", "if", "so", ",", "let's", "proceed", "to", "scene", "-2", ".", "[", "exeunt", "]", 
