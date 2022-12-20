@@ -17,9 +17,10 @@ string skip(string bufer, char input_symble, ofstream& fout, ifstream& fin);
 
 
 
-//создаем таблицу ключевых слов
+//создаем таблицу ключевых слов, таблицу персонажей(переменных), таблицу названий актов\сцен (метки)
 std::map<std::string, std::string> key_words{};
 std::map<std::string, int> personality_table{}, act_scene_table{};
+//В personality_table и act_scene_table строке имени сопоставляется число - уникальный номер переменной, который передается в синтаксический анализатор
 
 
 
@@ -33,8 +34,7 @@ string skip(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 //добавляет введенный символ в буфер
 string add(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
-    bufer += input_symble;
-    //fout << "Added_in_bufer. bufer:" << bufer << endl;
+    bufer += input_symble; //добавляет введенный символ в буфер
     return bufer;
 }
 
@@ -45,7 +45,7 @@ string write_name(string bufer, char input_symble, ofstream& fout, ifstream& fin
     //fout << "Writing name:" << bufer << endl;
     if (personality_table.count(bufer) != 0)  //проверка, что имя не является ключевым словом или названием акта\сцены
     {
-        cout << "Error. name " << bufer << " already exists." << endl;
+        cout << "Error. name " << bufer << " already exists." << endl; //Если является - выводим ошибку
         return "";
     }
     if (key_words.count(bufer) != 0) {
@@ -57,8 +57,8 @@ string write_name(string bufer, char input_symble, ofstream& fout, ifstream& fin
         return "";
     }
     //имена переменных начинаются с единицы, соответствие - имя <-> символ хранится в personality_table
-    int num = personality_table.size() + 1;
-    personality_table[bufer] = num;
+    int num = personality_table.size() + 1; //вычисляем номер переменной
+    personality_table[bufer] = num; //добавляем запись имя <-> номер
     return "";
 }
 
@@ -66,25 +66,25 @@ string write_name(string bufer, char input_symble, ofstream& fout, ifstream& fin
 string write_act(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     //fout << "Writing act:" << bufer << endl;
-
+    //проверка, что названием акта\сцены не является ключевым словом или именем
     if (personality_table.count(bufer) != 0)
     {
-        cout << "Error. name " << bufer << " already exists." << endl;
+        cout << "Error. name " << bufer << " already exists." << endl; // //Если является - выводим ошибку
         return "";
     }
     if (key_words.count(bufer) != 0) {
-        cout << "Error. name " << bufer << " must not be a key word." << endl;
+        cout << "Error. name " << bufer << " must not be a key word." << endl; //Если является - выводим ошибку
         return "";
     }
-    if (act_scene_table.count(bufer) != 0) {
+    if (act_scene_table.count(bufer) != 0) { //Если имя уже существует - выводим его в файл вывода
         fout << "\"" << act_scene_table[bufer] << "\", ";
         //fout << " " << act_scene_table[bufer] << " ";
         return "";
     }
     //имена актов\сцен - отрицательные числа. нумерация начинается с минус единицы, соответствие - имя <-> символ хранится в act_scene_table
-    int num = -1 - act_scene_table.size();
-    act_scene_table[bufer] = num;
-    fout << "\"" << act_scene_table[bufer] << "\", ";
+    int num = -1 - act_scene_table.size(); //вычисляем номер переменной
+    act_scene_table[bufer] = num; //добавляем запись имя <-> номер
+    fout << "\"" << act_scene_table[bufer] << "\", ";  //выводим в файл вывода
     //fout << " " << act_scene_table[bufer] << " ";
     return "";
 }
@@ -123,26 +123,27 @@ string write_word(string bufer, char input_symble, ofstream& fout, ifstream& fin
 {
     //Каждому слову сопоставляется лексема или из таблицы ключевых слов, или из таблицы имен, или из таблицы имен актов/сцен
     
-    if (bufer == "@" or bufer == "$")
+    if (bufer == "@" or bufer == "$")  //обработка так как ниже, но с добавлением \n для удобства восприятия и отладки
     {
         fout <<"\n" << "\"" << key_words[bufer] << "\", ";
         return "";
     }
-    if (personality_table.count(bufer) != 0) {
+    if (personality_table.count(bufer) != 0) { //если слово - это имя переменной  - выводим в файл вывода соотвутствующую лексему
         fout << "\"" << personality_table[bufer] << "\", ";
         //fout << " " << personality_table[bufer] << " ";
         return "";
     }
-    if (key_words.count(bufer) != 0) {
+    if (key_words.count(bufer) != 0) {  //если слово - это ключевое слово  - выводим в файл вывода соотвутствующую лексему
         fout << "\"" << key_words[bufer] << "\", ";
         //fout << " " << key_words[bufer] << " ";
         return "";
     }
-    if (act_scene_table.count(bufer) != 0) {
+    if (act_scene_table.count(bufer) != 0) { //если слово - это имя акта\сцены  - выводим в файл вывода соотвутствующую лексему
         fout << "\"" << act_scene_table[bufer] << "\", ";
         //fout << " " << act_scene_table[bufer] << " ";
         return "";
     }
+    //Если слово ничему не соответствует - пропускаем. Программа может содержать "лишние" слова для большей художественной выразительности
     return "";
 }
 
@@ -152,16 +153,16 @@ string write_word_and_next(string bufer, char input_symble, ofstream& fout, ifst
     string next = "";
     next += input_symble;
     //fout << "Writing words:" << bufer << "\t" << next << endl;
-    write_word(bufer, input_symble, fout, fin);
-    write_word(next, input_symble, fout, fin);
+    write_word(bufer, input_symble, fout, fin); //обрабатываем буфер как слово
+    write_word(next, input_symble, fout, fin); //обрабатываем input_symble как слово
     return "";
 }
 
 //Обрабатывает две лексемы, лексему типа имя акта/сцены из bufer и лексему типа слово из input_symble
 string write_act_and_next(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
-    write_act(bufer, input_symble, fout, fin);
-    write_word_and_next("", input_symble, fout, fin);
+    write_act(bufer, input_symble, fout, fin); //обрабатываем буфер как акт\сцену
+    write_word_and_next("", input_symble, fout, fin); //обрабатываем input_symble как слово
     return "";
 }
 
@@ -178,17 +179,17 @@ int main()
     //первая строка - input; вторая строка - output
     while (!keyword_table.eof())
     {
+        //считываем две строки
         string s_input, s_output;
-        getline(keyword_table, s_input);
+        getline(keyword_table, s_input);  
         getline(keyword_table, s_output);
         
 
-        key_words.insert(make_pair(s_input, s_output));
+        key_words.insert(make_pair(s_input, s_output)); //добавляем запись в таблицу ключевых слов
         //cout << s_input << "  "<< s_output <<endl;
     }
     keyword_table.close();
 
-    cout << key_words["."];
 
     //простой тест функциональности 
     /*
@@ -215,7 +216,8 @@ int main()
     //правила конечного автомата для препроцессора:
     //Препроцессор переводит все символы в нижний регистр и заменяет ключевые слова "Акт" и "Сцена" на символы @ и $
     //Это нужно для упрощения процедуры лексического анализа и удобного вывода результатов
-    preprocess_rules[make_pair('А', 1)] = make_pair(&add_in_bufer, 2);
+    preprocess_rules[make_pair('А', 1)] = make_pair(&add_in_bufer, 2); //добавляем правило - из состояния 1 при получении input_symble = 'А' 
+    //мы переходим в состояние 2 и выполняем процедуру add_in_bufer
     preprocess_rules[make_pair('к', 2)] = make_pair(&add_in_bufer, 3);
     preprocess_rules[make_pair('т', 3)] = make_pair(&add_in_bufer, 4);
     preprocess_rules[make_pair(' ', 4)] = make_pair(&write_act_pre, 1);
@@ -233,33 +235,35 @@ int main()
 
 
     //процесс выполнения конечного автомата:
+    
+    //определяем начальные условия
     string bufer = ""; 
     char input_symbol;
     int current_state = 1;
-    while (fin_pre.get(input_symbol))
+    while (fin_pre.get(input_symbol)) //считываем один символ
     {
         auto it = preprocess_rules.find(make_pair(input_symbol, current_state));
-        if (it == preprocess_rules.end())
+        if (it == preprocess_rules.end()) //проверяем, что правило существует
         {
-            //проверяем, что правило существует
+            //если нет:
 
             //cout << "skip " << current_state << "\tбуфер:" << bufer << "\tТекущий символ:" << static_cast<int> (input_symbol) << endl;
-            //специфическая штука для препроцессора:
+ 
             //не знаешь что делать - не трогай
-            bufer = clear_and_write_bufer(bufer, input_symbol, fout_pre, fin_pre);
-            if (input_symbol == ' ' or input_symbol == '\n')
+            bufer = clear_and_write_bufer(bufer, input_symbol, fout_pre, fin_pre); //переносим содержимое буферв в файл вывода 
+            if (input_symbol == ' ' or input_symbol == '\n') //переходим в состояние 1(между слов) после разделителя
                 current_state = 1;
             else
-                current_state = 0;
+                current_state = 0; //переходим в состояние 0 (внутри неизвестного слова) 
             continue;
         }
         //загнали состояние и ввод в правила, получили результат
-        auto action = (it->second).first;
-        int next_state = (it->second).second;
+        auto action = (it->second).first; //получаем процедуру из правила перехода
+        int next_state = (it->second).second; //получаем следующее состояние из правил перехода
 
         
-        bufer = (*action)(bufer, input_symbol, fout_pre, fin_pre);
-        current_state = next_state;
+        bufer = (*action)(bufer, input_symbol, fout_pre, fin_pre); //выполняем процедуру
+        current_state = next_state; //переходим в следующее состояние
     }
  
 
@@ -333,7 +337,10 @@ int main()
     lex_anal_rules[make_pair(']', 18)] = make_pair(&write_word_and_next, 11);
     add_list_to_rules(spaces, lex_anal_rules, 11, 11, &skip);
     */
+
+     //Эти правила продемонстрированы графически в другом файле
     add_list_to_rules(all_but_point, lex_anal_rules, 0, 0, &skip); //1
+    //для каждого символа из массива all_but_point добавляем в lex_anal_rules правило: (символ, состояние 0) -> (состояние 0, процедура skip)
     lex_anal_rules[make_pair('.', 0)] = make_pair(&skip, 1); //2
     add_list_to_rules(spaces, lex_anal_rules, 1, 1, &skip);
     add_list_to_rules(letters, lex_anal_rules, 1, 2, &add);
@@ -363,28 +370,30 @@ int main()
 
 
     cout << "Starting lex analysis" << endl;
+    //Начинаем лексический анализ
 
-
+    //определяем начальные условия
     bufer = "";
     current_state = 0;
-    while (fin_lex.get(input_symbol))
+    while (fin_lex.get(input_symbol)) //считываем один символ
     {
-        auto it = lex_anal_rules.find(make_pair(input_symbol, current_state));
-        if (it == lex_anal_rules.end())
+        auto it = lex_anal_rules.find(make_pair(input_symbol, current_state)); 
+        if (it == lex_anal_rules.end())  //проверяем, что правило существует
         {
+            //Если нет - ошибка
             cout << "Error: wrong syntaxis:\t" << current_state << "\tbufer:" << bufer << "\tcurrent symble:" << static_cast<int> (input_symbol) << endl;
             break;
         }
         //загнали состояние и ввод в правила, получили результат
-        auto action = (it->second).first;
-        int next_state = (it->second).second;
+        auto action = (it->second).first; //получаем процедуру из правила перехода
+        int next_state = (it->second).second; //получаем следующее состояние из правил перехода
 
         //string out_str = "";
         //out_str += input_symbol;
         //cout << "Doing something" << current_state << "\tbufer:" << bufer << "\tcurrent symble:" << static_cast<int> (input_symbol)<< endl;
 
-        bufer = (*action)(bufer, input_symbol, fout_lex, fin_lex);
-        current_state = next_state;
+        bufer = (*action)(bufer, input_symbol, fout_lex, fin_lex); //выполняем процедуру
+        current_state = next_state; //переходим в следующее состояние
     }
 
     fin_lex.close();
@@ -407,21 +416,19 @@ int main()
 
 
 
-//Разные функции
-
 string clear_and_write_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin) //переносит содержимое буфера в поток вывода
 {
-    char c = tolower(input_symble);
-    bufer += c;
-    fout << bufer;
-    return "";
+    char c = tolower(input_symble); //переводим входной символ в нижний регистр
+    bufer += c; //добавляем символ в буфер
+    fout << bufer; //выводим буфер в файл вывода
+    return ""; //очищаем буфер
 }
 
 //добавляет input_symble в bufer
 string add_in_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
-    char c = tolower(input_symble);
-    bufer += c;
+    char c = tolower(input_symble); //переводим входной символ в нижний регистр
+    bufer += c; //добавляем символ в буфер
     return bufer;
 }
 
@@ -463,10 +470,10 @@ string write_scene_pre(string bufer, char input_symble, ofstream& fout, ifstream
 //Добавление однотипных правил перехода для каждого символа из строки
 void add_list_to_rules(char* symbols, std::map<std::pair<char, int>, std::pair<string(*)(string bufer, char   input_symble, ofstream& fout, ifstream& fin), int>> &rules, int start, int end, string(*func)(string bufer, char   input_symble, ofstream& fout, ifstream& fin)) {
 
-    char* ptr = symbols;
-    while (*ptr) {
+    char* ptr = symbols; 
+    while (*ptr) { //перебираем все символы
         //printf("%c",*ptr);
-        rules[make_pair(*ptr, start)] = make_pair(func, end);
+        rules[make_pair(*ptr, start)] = make_pair(func, end); // добавляем правило в  rules
         //preprocess_rules[make_pair('A', 1)] = make_pair(&add_in_bufer, 2);
         ++ptr;
     }
