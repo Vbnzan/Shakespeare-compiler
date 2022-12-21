@@ -6,7 +6,7 @@
 #include <locale.h>
 using namespace std;
 
-//обьявление функций
+//Г®ГЎГјГїГўГ«ГҐГ­ГЁГҐ ГґГіГ­ГЄГ¶ГЁГ©
 string clear_and_write_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin);
 string add_in_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin);
 string ungetch(string bufer, char input_symble, ofstream& fout, ifstream& fin);
@@ -17,10 +17,10 @@ string skip(string bufer, char input_symble, ofstream& fout, ifstream& fin);
 
 
 
-//создаем таблицу ключевых слов, таблицу персонажей(переменных), таблицу названий актов\сцен (метки)
+//Г±Г®Г§Г¤Г ГҐГ¬ ГІГ ГЎГ«ГЁГ¶Гі ГЄГ«ГѕГ·ГҐГўГ»Гµ Г±Г«Г®Гў, ГІГ ГЎГ«ГЁГ¶Гі ГЇГҐГ°Г±Г®Г­Г Г¦ГҐГ©(ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»Гµ), ГІГ ГЎГ«ГЁГ¶Гі Г­Г Г§ГўГ Г­ГЁГ© Г ГЄГІГ®Гў\Г±Г¶ГҐГ­ (Г¬ГҐГІГЄГЁ)
 std::map<std::string, std::string> key_words{};
 std::map<std::string, int> personality_table{}, act_scene_table{};
-//В personality_table и act_scene_table строке имени сопоставляется число - уникальный номер переменной, который передается в синтаксический анализатор
+//Г‚ personality_table ГЁ act_scene_table Г±ГІГ°Г®ГЄГҐ ГЁГ¬ГҐГ­ГЁ Г±Г®ГЇГ®Г±ГІГ ГўГ«ГїГҐГІГ±Гї Г·ГЁГ±Г«Г® - ГіГ­ГЁГЄГ Г«ГјГ­Г»Г© Г­Г®Г¬ГҐГ° ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г®Г©, ГЄГ®ГІГ®Г°Г»Г© ГЇГҐГ°ГҐГ¤Г ГҐГІГ±Гї Гў Г±ГЁГ­ГІГ ГЄГ±ГЁГ·ГҐГ±ГЄГЁГ© Г Г­Г Г«ГЁГ§Г ГІГ®Г°
 
 
 
@@ -31,21 +31,21 @@ string skip(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 }
 
 
-//добавляет введенный символ в буфер
+//Г¤Г®ГЎГ ГўГ«ГїГҐГІ ГўГўГҐГ¤ГҐГ­Г­Г»Г© Г±ГЁГ¬ГўГ®Г« Гў ГЎГіГґГҐГ°
 string add(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
-    bufer += input_symble; //добавляет введенный символ в буфер
+    bufer += input_symble; //Г¤Г®ГЎГ ГўГ«ГїГҐГІ ГўГўГҐГ¤ГҐГ­Г­Г»Г© Г±ГЁГ¬ГўГ®Г« Гў ГЎГіГґГҐГ°
     return bufer;
 }
 
 
-//обработка лексемы типа имя
+//Г®ГЎГ°Г ГЎГ®ГІГЄГ  Г«ГҐГЄГ±ГҐГ¬Г» ГІГЁГЇГ  ГЁГ¬Гї
 string write_name(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     //fout << "Writing name:" << bufer << endl;
-    if (personality_table.count(bufer) != 0)  //проверка, что имя не является ключевым словом или названием акта\сцены
+    if (personality_table.count(bufer) != 0)  //ГЇГ°Г®ГўГҐГ°ГЄГ , Г·ГІГ® ГЁГ¬Гї Г­ГҐ ГїГўГ«ГїГҐГІГ±Гї ГЄГ«ГѕГ·ГҐГўГ»Г¬ Г±Г«Г®ГўГ®Г¬ ГЁГ«ГЁ Г­Г Г§ГўГ Г­ГЁГҐГ¬ Г ГЄГІГ \Г±Г¶ГҐГ­Г»
     {
-        cout << "Error. name " << bufer << " already exists." << endl; //Если является - выводим ошибку
+        cout << "Error. name " << bufer << " already exists." << endl; //Г…Г±Г«ГЁ ГїГўГ«ГїГҐГІГ±Гї - ГўГ»ГўГ®Г¤ГЁГ¬ Г®ГёГЁГЎГЄГі
         return "";
     }
     if (key_words.count(bufer) != 0) {
@@ -56,35 +56,35 @@ string write_name(string bufer, char input_symble, ofstream& fout, ifstream& fin
         cout << "Error. name " << bufer << " already exists." << endl;
         return "";
     }
-    //имена переменных начинаются с единицы, соответствие - имя <-> символ хранится в personality_table
-    int num = personality_table.size() + 1; //вычисляем номер переменной
-    personality_table[bufer] = num; //добавляем запись имя <-> номер
+    //ГЁГ¬ГҐГ­Г  ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»Гµ Г­Г Г·ГЁГ­Г ГѕГІГ±Гї Г± ГҐГ¤ГЁГ­ГЁГ¶Г», Г±Г®Г®ГІГўГҐГІГ±ГІГўГЁГҐ - ГЁГ¬Гї <-> Г±ГЁГ¬ГўГ®Г« ГµГ°Г Г­ГЁГІГ±Гї Гў personality_table
+    int num = personality_table.size() + 1; //ГўГ»Г·ГЁГ±Г«ГїГҐГ¬ Г­Г®Г¬ГҐГ° ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г®Г©
+    personality_table[bufer] = num; //Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Г§Г ГЇГЁГ±Гј ГЁГ¬Гї <-> Г­Г®Г¬ГҐГ°
     return "";
 }
 
-//обработка лексемы типа акт/сцена
+//Г®ГЎГ°Г ГЎГ®ГІГЄГ  Г«ГҐГЄГ±ГҐГ¬Г» ГІГЁГЇГ  Г ГЄГІ/Г±Г¶ГҐГ­Г 
 string write_act(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     //fout << "Writing act:" << bufer << endl;
-    //проверка, что названием акта\сцены не является ключевым словом или именем
+    //ГЇГ°Г®ГўГҐГ°ГЄГ , Г·ГІГ® Г­Г Г§ГўГ Г­ГЁГҐГ¬ Г ГЄГІГ \Г±Г¶ГҐГ­Г» Г­ГҐ ГїГўГ«ГїГҐГІГ±Гї ГЄГ«ГѕГ·ГҐГўГ»Г¬ Г±Г«Г®ГўГ®Г¬ ГЁГ«ГЁ ГЁГ¬ГҐГ­ГҐГ¬
     if (personality_table.count(bufer) != 0)
     {
-        cout << "Error. name " << bufer << " already exists." << endl; // //Если является - выводим ошибку
+        cout << "Error. name " << bufer << " already exists." << endl; // //Г…Г±Г«ГЁ ГїГўГ«ГїГҐГІГ±Гї - ГўГ»ГўГ®Г¤ГЁГ¬ Г®ГёГЁГЎГЄГі
         return "";
     }
     if (key_words.count(bufer) != 0) {
-        cout << "Error. name " << bufer << " must not be a key word." << endl; //Если является - выводим ошибку
+        cout << "Error. name " << bufer << " must not be a key word." << endl; //Г…Г±Г«ГЁ ГїГўГ«ГїГҐГІГ±Гї - ГўГ»ГўГ®Г¤ГЁГ¬ Г®ГёГЁГЎГЄГі
         return "";
     }
-    if (act_scene_table.count(bufer) != 0) { //Если имя уже существует - выводим его в файл вывода
+    if (act_scene_table.count(bufer) != 0) { //Г…Г±Г«ГЁ ГЁГ¬Гї ГіГ¦ГҐ Г±ГіГ№ГҐГ±ГІГўГіГҐГІ - ГўГ»ГўГ®Г¤ГЁГ¬ ГҐГЈГ® Гў ГґГ Г©Г« ГўГ»ГўГ®Г¤Г 
         fout << "\"" << act_scene_table[bufer] << "\".\n";
         //fout << " " << act_scene_table[bufer] << " ";
         return "";
     }
-    //имена актов\сцен - отрицательные числа. нумерация начинается с минус единицы, соответствие - имя <-> символ хранится в act_scene_table
-    int num = -1 - act_scene_table.size(); //вычисляем номер переменной
-    act_scene_table[bufer] = num; //добавляем запись имя <-> номер
-    fout << "\"" << act_scene_table[bufer] << "\".\n";  //выводим в файл вывода
+    //ГЁГ¬ГҐГ­Г  Г ГЄГІГ®Гў\Г±Г¶ГҐГ­ - Г®ГІГ°ГЁГ¶Г ГІГҐГ«ГјГ­Г»ГҐ Г·ГЁГ±Г«Г . Г­ГіГ¬ГҐГ°Г Г¶ГЁГї Г­Г Г·ГЁГ­Г ГҐГІГ±Гї Г± Г¬ГЁГ­ГіГ± ГҐГ¤ГЁГ­ГЁГ¶Г», Г±Г®Г®ГІГўГҐГІГ±ГІГўГЁГҐ - ГЁГ¬Гї <-> Г±ГЁГ¬ГўГ®Г« ГµГ°Г Г­ГЁГІГ±Гї Гў act_scene_table
+    int num = -1 - act_scene_table.size(); //ГўГ»Г·ГЁГ±Г«ГїГҐГ¬ Г­Г®Г¬ГҐГ° ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г®Г©
+    act_scene_table[bufer] = num; //Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Г§Г ГЇГЁГ±Гј ГЁГ¬Гї <-> Г­Г®Г¬ГҐГ°
+    fout << "\"" << act_scene_table[bufer] << "\".\n";  //ГўГ»ГўГ®Г¤ГЁГ¬ Гў ГґГ Г©Г« ГўГ»ГўГ®Г¤Г 
     //fout << " " << act_scene_table[bufer] << " ";
     return "";
 }
@@ -118,52 +118,52 @@ string write_scene(string bufer, char input_symble, ofstream& fout, ifstream& fi
 }
 */
 
-//обрабатывает лексему типа слово, выводит в файл вывода
+//Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГІ Г«ГҐГЄГ±ГҐГ¬Гі ГІГЁГЇГ  Г±Г«Г®ГўГ®, ГўГ»ГўГ®Г¤ГЁГІ Гў ГґГ Г©Г« ГўГ»ГўГ®Г¤Г 
 string write_word(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
-    //Каждому слову сопоставляется лексема или из таблицы ключевых слов, или из таблицы имен, или из таблицы имен актов/сцен
+    //ГЉГ Г¦Г¤Г®Г¬Гі Г±Г«Г®ГўГі Г±Г®ГЇГ®Г±ГІГ ГўГ«ГїГҐГІГ±Гї Г«ГҐГЄГ±ГҐГ¬Г  ГЁГ«ГЁ ГЁГ§ ГІГ ГЎГ«ГЁГ¶Г» ГЄГ«ГѕГ·ГҐГўГ»Гµ Г±Г«Г®Гў, ГЁГ«ГЁ ГЁГ§ ГІГ ГЎГ«ГЁГ¶Г» ГЁГ¬ГҐГ­, ГЁГ«ГЁ ГЁГ§ ГІГ ГЎГ«ГЁГ¶Г» ГЁГ¬ГҐГ­ Г ГЄГІГ®Гў/Г±Г¶ГҐГ­
     
-    if (bufer == "@" or bufer == "$")  //обработка так как ниже, но с добавлением \n для удобства восприятия и отладки
+    if (bufer == "@" or bufer == "$")  //Г®ГЎГ°Г ГЎГ®ГІГЄГ  ГІГ ГЄ ГЄГ ГЄ Г­ГЁГ¦ГҐ, Г­Г® Г± Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГҐГ¬ \n Г¤Г«Гї ГіГ¤Г®ГЎГ±ГІГўГ  ГўГ®Г±ГЇГ°ГЁГїГІГЁГї ГЁ Г®ГІГ«Г Г¤ГЄГЁ
     {
         //fout <<"\n" << "\"" << key_words[bufer] << "\", ";
         fout << "\"" << key_words[bufer] << "\".\n";
         return "";
     }
-    if (personality_table.count(bufer) != 0) { //если слово - это имя переменной  - выводим в файл вывода соотвутствующую лексему
+    if (personality_table.count(bufer) != 0) { //ГҐГ±Г«ГЁ Г±Г«Г®ГўГ® - ГЅГІГ® ГЁГ¬Гї ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г®Г©  - ГўГ»ГўГ®Г¤ГЁГ¬ Гў ГґГ Г©Г« ГўГ»ГўГ®Г¤Г  Г±Г®Г®ГІГўГіГІГ±ГІГўГіГѕГ№ГіГѕ Г«ГҐГЄГ±ГҐГ¬Гі
         fout << "\"" << personality_table[bufer] << "\".\n";
         //fout << " " << personality_table[bufer] << " ";
         return "";
     }
-    if (key_words.count(bufer) != 0) {  //если слово - это ключевое слово  - выводим в файл вывода соотвутствующую лексему
+    if (key_words.count(bufer) != 0) {  //ГҐГ±Г«ГЁ Г±Г«Г®ГўГ® - ГЅГІГ® ГЄГ«ГѕГ·ГҐГўГ®ГҐ Г±Г«Г®ГўГ®  - ГўГ»ГўГ®Г¤ГЁГ¬ Гў ГґГ Г©Г« ГўГ»ГўГ®Г¤Г  Г±Г®Г®ГІГўГіГІГ±ГІГўГіГѕГ№ГіГѕ Г«ГҐГЄГ±ГҐГ¬Гі
         fout << "\"" << key_words[bufer] << "\".\n";
         //fout << " " << key_words[bufer] << " ";
         return "";
     }
-    if (act_scene_table.count(bufer) != 0) { //если слово - это имя акта\сцены  - выводим в файл вывода соотвутствующую лексему
+    if (act_scene_table.count(bufer) != 0) { //ГҐГ±Г«ГЁ Г±Г«Г®ГўГ® - ГЅГІГ® ГЁГ¬Гї Г ГЄГІГ \Г±Г¶ГҐГ­Г»  - ГўГ»ГўГ®Г¤ГЁГ¬ Гў ГґГ Г©Г« ГўГ»ГўГ®Г¤Г  Г±Г®Г®ГІГўГіГІГ±ГІГўГіГѕГ№ГіГѕ Г«ГҐГЄГ±ГҐГ¬Гі
         fout << "\"" << act_scene_table[bufer] << "\".\n";
         //fout << " " << act_scene_table[bufer] << " ";
         return "";
     }
-    //Если слово ничему не соответствует - пропускаем. Программа может содержать "лишние" слова для большей художественной выразительности
+    //Г…Г±Г«ГЁ Г±Г«Г®ГўГ® Г­ГЁГ·ГҐГ¬Гі Г­ГҐ Г±Г®Г®ГІГўГҐГІГ±ГІГўГіГҐГІ - ГЇГ°Г®ГЇГіГ±ГЄГ ГҐГ¬. ГЏГ°Г®ГЈГ°Г Г¬Г¬Г  Г¬Г®Г¦ГҐГІ Г±Г®Г¤ГҐГ°Г¦Г ГІГј "Г«ГЁГёГ­ГЁГҐ" Г±Г«Г®ГўГ  Г¤Г«Гї ГЎГ®Г«ГјГёГҐГ© ГµГіГ¤Г®Г¦ГҐГ±ГІГўГҐГ­Г­Г®Г© ГўГ»Г°Г Г§ГЁГІГҐГ«ГјГ­Г®Г±ГІГЁ
     return "";
 }
 
-//Обрабатывает две лексемы, лексему типа слово из bufer и лексему типа слово из input_symble
+//ГЋГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГІ Г¤ГўГҐ Г«ГҐГЄГ±ГҐГ¬Г», Г«ГҐГЄГ±ГҐГ¬Гі ГІГЁГЇГ  Г±Г«Г®ГўГ® ГЁГ§ bufer ГЁ Г«ГҐГЄГ±ГҐГ¬Гі ГІГЁГЇГ  Г±Г«Г®ГўГ® ГЁГ§ input_symble
 string write_word_and_next(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     string next = "";
     next += input_symble;
     //fout << "Writing words:" << bufer << "\t" << next << endl;
-    write_word(bufer, input_symble, fout, fin); //обрабатываем буфер как слово
-    write_word(next, input_symble, fout, fin); //обрабатываем input_symble как слово
+    write_word(bufer, input_symble, fout, fin); //Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬ ГЎГіГґГҐГ° ГЄГ ГЄ Г±Г«Г®ГўГ®
+    write_word(next, input_symble, fout, fin); //Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬ input_symble ГЄГ ГЄ Г±Г«Г®ГўГ®
     return "";
 }
 
-//Обрабатывает две лексемы, лексему типа имя акта/сцены из bufer и лексему типа слово из input_symble
+//ГЋГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГІ Г¤ГўГҐ Г«ГҐГЄГ±ГҐГ¬Г», Г«ГҐГЄГ±ГҐГ¬Гі ГІГЁГЇГ  ГЁГ¬Гї Г ГЄГІГ /Г±Г¶ГҐГ­Г» ГЁГ§ bufer ГЁ Г«ГҐГЄГ±ГҐГ¬Гі ГІГЁГЇГ  Г±Г«Г®ГўГ® ГЁГ§ input_symble
 string write_act_and_next(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
-    write_act(bufer, input_symble, fout, fin); //обрабатываем буфер как акт\сцену
-    write_word_and_next("", input_symble, fout, fin); //обрабатываем input_symble как слово
+    write_act(bufer, input_symble, fout, fin); //Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬ ГЎГіГґГҐГ° ГЄГ ГЄ Г ГЄГІ\Г±Г¶ГҐГ­Гі
+    write_word_and_next("", input_symble, fout, fin); //Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬ input_symble ГЄГ ГЄ Г±Г«Г®ГўГ®
     return "";
 }
 
@@ -176,23 +176,23 @@ int main()
     
     
     
-    //заполнение таблицы ключевых слов
-    //первая строка - input; вторая строка - output
+    //Г§Г ГЇГ®Г«Г­ГҐГ­ГЁГҐ ГІГ ГЎГ«ГЁГ¶Г» ГЄГ«ГѕГ·ГҐГўГ»Гµ Г±Г«Г®Гў
+    //ГЇГҐГ°ГўГ Гї Г±ГІГ°Г®ГЄГ  - input; ГўГІГ®Г°Г Гї Г±ГІГ°Г®ГЄГ  - output
     while (!keyword_table.eof())
     {
-        //считываем две строки
+        //Г±Г·ГЁГІГ»ГўГ ГҐГ¬ Г¤ГўГҐ Г±ГІГ°Г®ГЄГЁ
         string s_input, s_output;
         getline(keyword_table, s_input);  
         getline(keyword_table, s_output);
         
 
-        key_words.insert(make_pair(s_input, s_output)); //добавляем запись в таблицу ключевых слов
+        key_words.insert(make_pair(s_input, s_output)); //Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Г§Г ГЇГЁГ±Гј Гў ГІГ ГЎГ«ГЁГ¶Гі ГЄГ«ГѕГ·ГҐГўГ»Гµ Г±Г«Г®Гў
         //cout << s_input << "  "<< s_output <<endl;
     }
     keyword_table.close();
 
 
-    //простой тест функциональности 
+    //ГЇГ°Г®Г±ГІГ®Г© ГІГҐГ±ГІ ГґГіГ­ГЄГ¶ГЁГ®Г­Г Г«ГјГ­Г®Г±ГІГЁ 
     /*
     char c;
     while (fin >> c)
@@ -207,64 +207,64 @@ int main()
 
     */
 
-    //В input.txt хратится исходный код обрабатываемой программы
+    //Г‚ input.txt ГµГ°Г ГІГЁГІГ±Гї ГЁГ±ГµГ®Г¤Г­Г»Г© ГЄГ®Г¤ Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГ¬Г®Г© ГЇГ°Г®ГЈГ°Г Г¬Г¬Г»
     ifstream fin_pre("input.txt");
-    //В output_pre.txt хратится вывод препроцессора
+    //Г‚ output_pre.txt ГµГ°Г ГІГЁГІГ±Гї ГўГ»ГўГ®Г¤ ГЇГ°ГҐГЇГ°Г®Г¶ГҐГ±Г±Г®Г°Г 
     ofstream fout_pre("output_pre.txt");
     std::map<std::pair<char, int>, std::pair<string(*)(string bufer, char input_symble, ofstream& fout, ifstream& fin), int>> preprocess_rules{};
-    //Для пары тек состояния int и символа ввода char ставим в соответствие пару следующего состояния и функцию, что будет что-то делать
+    //Г„Г«Гї ГЇГ Г°Г» ГІГҐГЄ Г±Г®Г±ГІГ®ГїГ­ГЁГї int ГЁ Г±ГЁГ¬ГўГ®Г«Г  ГўГўГ®Г¤Г  char Г±ГІГ ГўГЁГ¬ Гў Г±Г®Г®ГІГўГҐГІГ±ГІГўГЁГҐ ГЇГ Г°Гі Г±Г«ГҐГ¤ГіГѕГ№ГҐГЈГ® Г±Г®Г±ГІГ®ГїГ­ГЁГї ГЁ ГґГіГ­ГЄГ¶ГЁГѕ, Г·ГІГ® ГЎГіГ¤ГҐГІ Г·ГІГ®-ГІГ® Г¤ГҐГ«Г ГІГј
 
-    //правила конечного автомата для препроцессора:
-    //Препроцессор переводит все символы в нижний регистр и заменяет ключевые слова "Акт" и "Сцена" на символы @ и $
-    //Это нужно для упрощения процедуры лексического анализа и удобного вывода результатов
-    preprocess_rules[make_pair('А', 1)] = make_pair(&add_in_bufer, 2); //добавляем правило - из состояния 1 при получении input_symble = 'А' 
-    //мы переходим в состояние 2 и выполняем процедуру add_in_bufer
-    preprocess_rules[make_pair('к', 2)] = make_pair(&add_in_bufer, 3);
-    preprocess_rules[make_pair('т', 3)] = make_pair(&add_in_bufer, 4);
+    //ГЇГ°Г ГўГЁГ«Г  ГЄГ®Г­ГҐГ·Г­Г®ГЈГ® Г ГўГІГ®Г¬Г ГІГ  Г¤Г«Гї ГЇГ°ГҐГЇГ°Г®Г¶ГҐГ±Г±Г®Г°Г :
+    //ГЏГ°ГҐГЇГ°Г®Г¶ГҐГ±Г±Г®Г° ГЇГҐГ°ГҐГўГ®Г¤ГЁГІ ГўГ±ГҐ Г±ГЁГ¬ГўГ®Г«Г» Гў Г­ГЁГ¦Г­ГЁГ© Г°ГҐГЈГЁГ±ГІГ° ГЁ Г§Г Г¬ГҐГ­ГїГҐГІ ГЄГ«ГѕГ·ГҐГўГ»ГҐ Г±Г«Г®ГўГ  "ГЂГЄГІ" ГЁ "Г‘Г¶ГҐГ­Г " Г­Г  Г±ГЁГ¬ГўГ®Г«Г» @ ГЁ $
+    //ГќГІГ® Г­ГіГ¦Г­Г® Г¤Г«Гї ГіГЇГ°Г®Г№ГҐГ­ГЁГї ГЇГ°Г®Г¶ГҐГ¤ГіГ°Г» Г«ГҐГЄГ±ГЁГ·ГҐГ±ГЄГ®ГЈГ® Г Г­Г Г«ГЁГ§Г  ГЁ ГіГ¤Г®ГЎГ­Г®ГЈГ® ГўГ»ГўГ®Г¤Г  Г°ГҐГ§ГіГ«ГјГІГ ГІГ®Гў
+    preprocess_rules[make_pair('ГЂ', 1)] = make_pair(&add_in_bufer, 2); //Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ ГЇГ°Г ГўГЁГ«Г® - ГЁГ§ Г±Г®Г±ГІГ®ГїГ­ГЁГї 1 ГЇГ°ГЁ ГЇГ®Г«ГіГ·ГҐГ­ГЁГЁ input_symble = 'ГЂ' 
+    //Г¬Г» ГЇГҐГ°ГҐГµГ®Г¤ГЁГ¬ Гў Г±Г®Г±ГІГ®ГїГ­ГЁГҐ 2 ГЁ ГўГ»ГЇГ®Г«Г­ГїГҐГ¬ ГЇГ°Г®Г¶ГҐГ¤ГіГ°Гі add_in_bufer
+    preprocess_rules[make_pair('ГЄ', 2)] = make_pair(&add_in_bufer, 3);
+    preprocess_rules[make_pair('ГІ', 3)] = make_pair(&add_in_bufer, 4);
     preprocess_rules[make_pair(' ', 4)] = make_pair(&write_act_pre, 1);
     preprocess_rules[make_pair('\n', 4)] = make_pair(&write_act_pre, 1);
 
-    preprocess_rules[make_pair('С', 1)] = make_pair(&add_in_bufer, 5);
-    preprocess_rules[make_pair('ц', 5)] = make_pair(&add_in_bufer, 6);
-    preprocess_rules[make_pair('е', 6)] = make_pair(&add_in_bufer, 7);
-    preprocess_rules[make_pair('н', 7)] = make_pair(&add_in_bufer, 8);
-    preprocess_rules[make_pair('а', 8)] = make_pair(&add_in_bufer, 9);
+    preprocess_rules[make_pair('Г‘', 1)] = make_pair(&add_in_bufer, 5);
+    preprocess_rules[make_pair('Г¶', 5)] = make_pair(&add_in_bufer, 6);
+    preprocess_rules[make_pair('ГҐ', 6)] = make_pair(&add_in_bufer, 7);
+    preprocess_rules[make_pair('Г­', 7)] = make_pair(&add_in_bufer, 8);
+    preprocess_rules[make_pair('Г ', 8)] = make_pair(&add_in_bufer, 9);
     preprocess_rules[make_pair(' ', 9)] = make_pair(&write_scene_pre, 1);
     preprocess_rules[make_pair('\n', 9)] = make_pair(&write_scene_pre, 1);
 
 
 
 
-    //процесс выполнения конечного автомата:
+    //ГЇГ°Г®Г¶ГҐГ±Г± ГўГ»ГЇГ®Г«Г­ГҐГ­ГЁГї ГЄГ®Г­ГҐГ·Г­Г®ГЈГ® Г ГўГІГ®Г¬Г ГІГ :
     
-    //определяем начальные условия
+    //Г®ГЇГ°ГҐГ¤ГҐГ«ГїГҐГ¬ Г­Г Г·Г Г«ГјГ­Г»ГҐ ГіГ±Г«Г®ГўГЁГї
     string bufer = ""; 
     char input_symbol;
     int current_state = 1;
-    while (fin_pre.get(input_symbol)) //считываем один символ
+    while (fin_pre.get(input_symbol)) //Г±Г·ГЁГІГ»ГўГ ГҐГ¬ Г®Г¤ГЁГ­ Г±ГЁГ¬ГўГ®Г«
     {
         auto it = preprocess_rules.find(make_pair(input_symbol, current_state));
-        if (it == preprocess_rules.end()) //проверяем, что правило существует
+        if (it == preprocess_rules.end()) //ГЇГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® ГЇГ°Г ГўГЁГ«Г® Г±ГіГ№ГҐГ±ГІГўГіГҐГІ
         {
-            //если нет:
+            //ГҐГ±Г«ГЁ Г­ГҐГІ:
 
-            //cout << "skip " << current_state << "\tбуфер:" << bufer << "\tТекущий символ:" << static_cast<int> (input_symbol) << endl;
+            //cout << "skip " << current_state << "\tГЎГіГґГҐГ°:" << bufer << "\tГ’ГҐГЄГіГ№ГЁГ© Г±ГЁГ¬ГўГ®Г«:" << static_cast<int> (input_symbol) << endl;
  
-            //не знаешь что делать - не трогай
-            bufer = clear_and_write_bufer(bufer, input_symbol, fout_pre, fin_pre); //переносим содержимое буферв в файл вывода 
-            if (input_symbol == ' ' or input_symbol == '\n') //переходим в состояние 1(между слов) после разделителя
+            //Г­ГҐ Г§Г­Г ГҐГёГј Г·ГІГ® Г¤ГҐГ«Г ГІГј - Г­ГҐ ГІГ°Г®ГЈГ Г©
+            bufer = clear_and_write_bufer(bufer, input_symbol, fout_pre, fin_pre); //ГЇГҐГ°ГҐГ­Г®Г±ГЁГ¬ Г±Г®Г¤ГҐГ°Г¦ГЁГ¬Г®ГҐ ГЎГіГґГҐГ°Гў Гў ГґГ Г©Г« ГўГ»ГўГ®Г¤Г  
+            if (input_symbol == ' ' or input_symbol == '\n') //ГЇГҐГ°ГҐГµГ®Г¤ГЁГ¬ Гў Г±Г®Г±ГІГ®ГїГ­ГЁГҐ 1(Г¬ГҐГ¦Г¤Гі Г±Г«Г®Гў) ГЇГ®Г±Г«ГҐ Г°Г Г§Г¤ГҐГ«ГЁГІГҐГ«Гї
                 current_state = 1;
             else
-                current_state = 0; //переходим в состояние 0 (внутри неизвестного слова) 
+                current_state = 0; //ГЇГҐГ°ГҐГµГ®Г¤ГЁГ¬ Гў Г±Г®Г±ГІГ®ГїГ­ГЁГҐ 0 (ГўГ­ГіГІГ°ГЁ Г­ГҐГЁГ§ГўГҐГ±ГІГ­Г®ГЈГ® Г±Г«Г®ГўГ ) 
             continue;
         }
-        //загнали состояние и ввод в правила, получили результат
-        auto action = (it->second).first; //получаем процедуру из правила перехода
-        int next_state = (it->second).second; //получаем следующее состояние из правил перехода
+        //Г§Г ГЈГ­Г Г«ГЁ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ ГЁ ГўГўГ®Г¤ Гў ГЇГ°Г ГўГЁГ«Г , ГЇГ®Г«ГіГ·ГЁГ«ГЁ Г°ГҐГ§ГіГ«ГјГІГ ГІ
+        auto action = (it->second).first; //ГЇГ®Г«ГіГ·Г ГҐГ¬ ГЇГ°Г®Г¶ГҐГ¤ГіГ°Гі ГЁГ§ ГЇГ°Г ГўГЁГ«Г  ГЇГҐГ°ГҐГµГ®Г¤Г 
+        int next_state = (it->second).second; //ГЇГ®Г«ГіГ·Г ГҐГ¬ Г±Г«ГҐГ¤ГіГѕГ№ГҐГҐ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ ГЁГ§ ГЇГ°Г ГўГЁГ« ГЇГҐГ°ГҐГµГ®Г¤Г 
 
         
-        bufer = (*action)(bufer, input_symbol, fout_pre, fin_pre); //выполняем процедуру
-        current_state = next_state; //переходим в следующее состояние
+        bufer = (*action)(bufer, input_symbol, fout_pre, fin_pre); //ГўГ»ГЇГ®Г«Г­ГїГҐГ¬ ГЇГ°Г®Г¶ГҐГ¤ГіГ°Гі
+        current_state = next_state; //ГЇГҐГ°ГҐГµГ®Г¤ГЁГ¬ Гў Г±Г«ГҐГ¤ГіГѕГ№ГҐГҐ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ
     }
  
 
@@ -272,20 +272,20 @@ int main()
     fin_pre.close();
     fout_pre.close();
 
-    //Правила конечного автомата для лексического анализа
+    //ГЏГ°Г ГўГЁГ«Г  ГЄГ®Г­ГҐГ·Г­Г®ГЈГ® Г ГўГІГ®Г¬Г ГІГ  Г¤Г«Гї Г«ГҐГЄГ±ГЁГ·ГҐГ±ГЄГ®ГЈГ® Г Г­Г Г«ГЁГ§Г 
     std::map<std::pair<char, int>, std::pair<string(*)(string bufer, char   input_symble, ofstream& fout, ifstream& fin), int>> lex_anal_rules{};
 
-    //Разбиение символов из алфавита на группы
-    char letters[] = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮйцукенгшщзхъфывапролджэячсмитьбюivxlcdm";
-    char non_roman_letters[] = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮйцукенгшщзхъфывапролджэячсмитьбю";
+    //ГђГ Г§ГЎГЁГҐГ­ГЁГҐ Г±ГЁГ¬ГўГ®Г«Г®Гў ГЁГ§ Г Г«ГґГ ГўГЁГІГ  Г­Г  ГЈГ°ГіГЇГЇГ»
+    char letters[] = "Г‰Г–Г“ГЉГ…ГЌГѓГГ™Г‡Г•ГљГ”Г›Г‚ГЂГЏГђГЋГ‹Г„Г†ГќГџГ—Г‘ГЊГ€Г’ГњГЃГћГ©Г¶ГіГЄГҐГ­ГЈГёГ№Г§ГµГєГґГ»ГўГ ГЇГ°Г®Г«Г¤Г¦ГЅГїГ·Г±Г¬ГЁГІГјГЎГѕivxlcdm";
+    char non_roman_letters[] = "Г‰Г–Г“ГЉГ…ГЌГѓГГ™Г‡Г•ГљГ”Г›Г‚ГЂГЏГђГЋГ‹Г„Г†ГќГџГ—Г‘ГЊГ€Г’ГњГЃГћГ©Г¶ГіГЄГҐГ­ГЈГёГ№Г§ГµГєГґГ»ГўГ ГЇГ°Г®Г«Г¤Г¦ГЅГїГ·Г±Г¬ГЁГІГјГЎГѕ";
     char spaces[] = "\n\t ";
-    char all_but_point[] = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮйцукенгшщзхъфывапролджэячсмитьбю,?:! \n\tivxlcdm";
+    char all_but_point[] = "Г‰Г–Г“ГЉГ…ГЌГѓГГ™Г‡Г•ГљГ”Г›Г‚ГЂГЏГђГЋГ‹Г„Г†ГќГџГ—Г‘ГЊГ€Г’ГњГЃГћГ©Г¶ГіГЄГҐГ­ГЈГёГ№Г§ГµГєГґГ»ГўГ ГЇГ°Г®Г«Г¤Г¦ГЅГїГ·Г±Г¬ГЁГІГјГЎГѕ,?:! \n\tivxlcdm";
     char end_sentence[] = ".!?";
     char divinity[] = " \n\t,";
     char roman_num[] = "ivxlcdm";
     char symbols[] = ".!?,@$[]:";
     //add_list_to_rules(letters, lex_anal_rules, 0, 1, &skip);
-    //preprocess_rules[make_pair('А', 1)] = make_pair(&add_in_bufer, 2);
+    //preprocess_rules[make_pair('ГЂ', 1)] = make_pair(&add_in_bufer, 2);
 
     /*
     add_list_to_rules(all_but_point, lex_anal_rules, 0, 0, &skip); //1
@@ -339,9 +339,9 @@ int main()
     add_list_to_rules(spaces, lex_anal_rules, 11, 11, &skip);
     */
 
-     //Эти правила продемонстрированы графически в другом файле
+     //ГќГІГЁ ГЇГ°Г ГўГЁГ«Г  ГЇГ°Г®Г¤ГҐГ¬Г®Г­Г±ГІГ°ГЁГ°Г®ГўГ Г­Г» ГЈГ°Г ГґГЁГ·ГҐГ±ГЄГЁ Гў Г¤Г°ГіГЈГ®Г¬ ГґГ Г©Г«ГҐ
     add_list_to_rules(all_but_point, lex_anal_rules, 0, 0, &skip); //1
-    //для каждого символа из массива all_but_point добавляем в lex_anal_rules правило: (символ, состояние 0) -> (состояние 0, процедура skip)
+    //Г¤Г«Гї ГЄГ Г¦Г¤Г®ГЈГ® Г±ГЁГ¬ГўГ®Г«Г  ГЁГ§ Г¬Г Г±Г±ГЁГўГ  all_but_point Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Гў lex_anal_rules ГЇГ°Г ГўГЁГ«Г®: (Г±ГЁГ¬ГўГ®Г«, Г±Г®Г±ГІГ®ГїГ­ГЁГҐ 0) -> (Г±Г®Г±ГІГ®ГїГ­ГЁГҐ 0, ГЇГ°Г®Г¶ГҐГ¤ГіГ°Г  skip)
     lex_anal_rules[make_pair('.', 0)] = make_pair(&skip, 1); //2
     add_list_to_rules(spaces, lex_anal_rules, 1, 1, &skip);
     add_list_to_rules(letters, lex_anal_rules, 1, 2, &add);
@@ -365,36 +365,36 @@ int main()
 
     add_list_to_rules(symbols, lex_anal_rules, 4, 4, &write_word_and_next);
 
-    //подаем результат работы препроцессора в лекс анализатор
+    //ГЇГ®Г¤Г ГҐГ¬ Г°ГҐГ§ГіГ«ГјГІГ ГІ Г°Г ГЎГ®ГІГ» ГЇГ°ГҐГЇГ°Г®Г¶ГҐГ±Г±Г®Г°Г  Гў Г«ГҐГЄГ± Г Г­Г Г«ГЁГ§Г ГІГ®Г°
     ifstream fin_lex("output_pre.txt");
     ofstream fout_lex("output_lex.txt");
 
 
     cout << "Starting lex analysis" << endl;
-    //Начинаем лексический анализ
+    //ГЌГ Г·ГЁГ­Г ГҐГ¬ Г«ГҐГЄГ±ГЁГ·ГҐГ±ГЄГЁГ© Г Г­Г Г«ГЁГ§
 
-    //определяем начальные условия
+    //Г®ГЇГ°ГҐГ¤ГҐГ«ГїГҐГ¬ Г­Г Г·Г Г«ГјГ­Г»ГҐ ГіГ±Г«Г®ГўГЁГї
     bufer = "";
     current_state = 0;
-    while (fin_lex.get(input_symbol)) //считываем один символ
+    while (fin_lex.get(input_symbol)) //Г±Г·ГЁГІГ»ГўГ ГҐГ¬ Г®Г¤ГЁГ­ Г±ГЁГ¬ГўГ®Г«
     {
         auto it = lex_anal_rules.find(make_pair(input_symbol, current_state)); 
-        if (it == lex_anal_rules.end())  //проверяем, что правило существует
+        if (it == lex_anal_rules.end())  //ГЇГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® ГЇГ°Г ГўГЁГ«Г® Г±ГіГ№ГҐГ±ГІГўГіГҐГІ
         {
-            //Если нет - ошибка
+            //Г…Г±Г«ГЁ Г­ГҐГІ - Г®ГёГЁГЎГЄГ 
             cout << "Error: wrong syntaxis:\t" << current_state << "\tbufer:" << bufer << "\tcurrent symble:" << static_cast<int> (input_symbol) << endl;
             break;
         }
-        //загнали состояние и ввод в правила, получили результат
-        auto action = (it->second).first; //получаем процедуру из правила перехода
-        int next_state = (it->second).second; //получаем следующее состояние из правил перехода
+        //Г§Г ГЈГ­Г Г«ГЁ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ ГЁ ГўГўГ®Г¤ Гў ГЇГ°Г ГўГЁГ«Г , ГЇГ®Г«ГіГ·ГЁГ«ГЁ Г°ГҐГ§ГіГ«ГјГІГ ГІ
+        auto action = (it->second).first; //ГЇГ®Г«ГіГ·Г ГҐГ¬ ГЇГ°Г®Г¶ГҐГ¤ГіГ°Гі ГЁГ§ ГЇГ°Г ГўГЁГ«Г  ГЇГҐГ°ГҐГµГ®Г¤Г 
+        int next_state = (it->second).second; //ГЇГ®Г«ГіГ·Г ГҐГ¬ Г±Г«ГҐГ¤ГіГѕГ№ГҐГҐ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ ГЁГ§ ГЇГ°Г ГўГЁГ« ГЇГҐГ°ГҐГµГ®Г¤Г 
 
         //string out_str = "";
         //out_str += input_symbol;
         //cout << "Doing something" << current_state << "\tbufer:" << bufer << "\tcurrent symble:" << static_cast<int> (input_symbol)<< endl;
 
-        bufer = (*action)(bufer, input_symbol, fout_lex, fin_lex); //выполняем процедуру
-        current_state = next_state; //переходим в следующее состояние
+        bufer = (*action)(bufer, input_symbol, fout_lex, fin_lex); //ГўГ»ГЇГ®Г«Г­ГїГҐГ¬ ГЇГ°Г®Г¶ГҐГ¤ГіГ°Гі
+        current_state = next_state; //ГЇГҐГ°ГҐГµГ®Г¤ГЁГ¬ Гў Г±Г«ГҐГ¤ГіГѕГ№ГҐГҐ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ
     }
 
     fin_lex.close();
@@ -417,33 +417,33 @@ int main()
 
 
 
-string clear_and_write_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin) //переносит содержимое буфера в поток вывода
+string clear_and_write_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin) //ГЇГҐГ°ГҐГ­Г®Г±ГЁГІ Г±Г®Г¤ГҐГ°Г¦ГЁГ¬Г®ГҐ ГЎГіГґГҐГ°Г  Гў ГЇГ®ГІГ®ГЄ ГўГ»ГўГ®Г¤Г 
 {
-    char c = tolower(input_symble); //переводим входной символ в нижний регистр
-    bufer += c; //добавляем символ в буфер
-    fout << bufer; //выводим буфер в файл вывода
-    return ""; //очищаем буфер
+    char c = tolower(input_symble); //ГЇГҐГ°ГҐГўГ®Г¤ГЁГ¬ ГўГµГ®Г¤Г­Г®Г© Г±ГЁГ¬ГўГ®Г« Гў Г­ГЁГ¦Г­ГЁГ© Г°ГҐГЈГЁГ±ГІГ°
+    bufer += c; //Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Г±ГЁГ¬ГўГ®Г« Гў ГЎГіГґГҐГ°
+    fout << bufer; //ГўГ»ГўГ®Г¤ГЁГ¬ ГЎГіГґГҐГ° Гў ГґГ Г©Г« ГўГ»ГўГ®Г¤Г 
+    return ""; //Г®Г·ГЁГ№Г ГҐГ¬ ГЎГіГґГҐГ°
 }
 
-//добавляет input_symble в bufer
+//Г¤Г®ГЎГ ГўГ«ГїГҐГІ input_symble Гў bufer
 string add_in_bufer(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
-    char c = tolower(input_symble); //переводим входной символ в нижний регистр
-    bufer += c; //добавляем символ в буфер
+    char c = tolower(input_symble); //ГЇГҐГ°ГҐГўГ®Г¤ГЁГ¬ ГўГµГ®Г¤Г­Г®Г© Г±ГЁГ¬ГўГ®Г« Гў Г­ГЁГ¦Г­ГЁГ© Г°ГҐГЈГЁГ±ГІГ°
+    bufer += c; //Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Г±ГЁГ¬ГўГ®Г« Гў ГЎГіГґГҐГ°
     return bufer;
 }
 
-//пока не нужно, но пусть будет
+//ГЇГ®ГЄГ  Г­ГҐ Г­ГіГ¦Г­Г®, Г­Г® ГЇГіГ±ГІГј ГЎГіГ¤ГҐГІ
 /*
 string ungetch(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     int cur_pos = fin.tellg();
-    fin.seekg(cur_pos - 1); //или +1 ?
+    fin.seekg(cur_pos - 1); //ГЁГ«ГЁ +1 ?
     return bufer;
 }*/
 
-//Препроцессор  заменяет ключевые слова "Акт" и "Сцена" на символы @ и $
-//Это нужно для упрощения процедуры лексического анализа и удобного вывода результатов
+//ГЏГ°ГҐГЇГ°Г®Г¶ГҐГ±Г±Г®Г°  Г§Г Г¬ГҐГ­ГїГҐГІ ГЄГ«ГѕГ·ГҐГўГ»ГҐ Г±Г«Г®ГўГ  "ГЂГЄГІ" ГЁ "Г‘Г¶ГҐГ­Г " Г­Г  Г±ГЁГ¬ГўГ®Г«Г» @ ГЁ $
+//ГќГІГ® Г­ГіГ¦Г­Г® Г¤Г«Гї ГіГЇГ°Г®Г№ГҐГ­ГЁГї ГЇГ°Г®Г¶ГҐГ¤ГіГ°Г» Г«ГҐГЄГ±ГЁГ·ГҐГ±ГЄГ®ГЈГ® Г Г­Г Г«ГЁГ§Г  ГЁ ГіГ¤Г®ГЎГ­Г®ГЈГ® ГўГ»ГўГ®Г¤Г  Г°ГҐГ§ГіГ«ГјГІГ ГІГ®Гў
 string write_act_pre(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     cout << "writing act\n";
@@ -454,8 +454,8 @@ string write_act_pre(string bufer, char input_symble, ofstream& fout, ifstream& 
 }
 
 
-//Препроцессор  заменяет ключевые слова "Акт" и "Сцена" на символы @ и $
-//Это нужно для упрощения процедуры лексического анализа и удобного вывода результатов
+//ГЏГ°ГҐГЇГ°Г®Г¶ГҐГ±Г±Г®Г°  Г§Г Г¬ГҐГ­ГїГҐГІ ГЄГ«ГѕГ·ГҐГўГ»ГҐ Г±Г«Г®ГўГ  "ГЂГЄГІ" ГЁ "Г‘Г¶ГҐГ­Г " Г­Г  Г±ГЁГ¬ГўГ®Г«Г» @ ГЁ $
+//ГќГІГ® Г­ГіГ¦Г­Г® Г¤Г«Гї ГіГЇГ°Г®Г№ГҐГ­ГЁГї ГЇГ°Г®Г¶ГҐГ¤ГіГ°Г» Г«ГҐГЄГ±ГЁГ·ГҐГ±ГЄГ®ГЈГ® Г Г­Г Г«ГЁГ§Г  ГЁ ГіГ¤Г®ГЎГ­Г®ГЈГ® ГўГ»ГўГ®Г¤Г  Г°ГҐГ§ГіГ«ГјГІГ ГІГ®Гў
 string write_scene_pre(string bufer, char input_symble, ofstream& fout, ifstream& fin)
 {
     cout << "writing scene";
@@ -468,13 +468,13 @@ string write_scene_pre(string bufer, char input_symble, ofstream& fout, ifstream
 
 
 
-//Добавление однотипных правил перехода для каждого символа из строки
+//Г„Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ Г®Г¤Г­Г®ГІГЁГЇГ­Г»Гµ ГЇГ°Г ГўГЁГ« ГЇГҐГ°ГҐГµГ®Г¤Г  Г¤Г«Гї ГЄГ Г¦Г¤Г®ГЈГ® Г±ГЁГ¬ГўГ®Г«Г  ГЁГ§ Г±ГІГ°Г®ГЄГЁ
 void add_list_to_rules(char* symbols, std::map<std::pair<char, int>, std::pair<string(*)(string bufer, char   input_symble, ofstream& fout, ifstream& fin), int>> &rules, int start, int end, string(*func)(string bufer, char   input_symble, ofstream& fout, ifstream& fin)) {
 
     char* ptr = symbols; 
-    while (*ptr) { //перебираем все символы
+    while (*ptr) { //ГЇГҐГ°ГҐГЎГЁГ°Г ГҐГ¬ ГўГ±ГҐ Г±ГЁГ¬ГўГ®Г«Г»
         //printf("%c",*ptr);
-        rules[make_pair(*ptr, start)] = make_pair(func, end); // добавляем правило в  rules
+        rules[make_pair(*ptr, start)] = make_pair(func, end); // Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ ГЇГ°Г ГўГЁГ«Г® Гў  rules
         //preprocess_rules[make_pair('A', 1)] = make_pair(&add_in_bufer, 2);
         ++ptr;
     }
